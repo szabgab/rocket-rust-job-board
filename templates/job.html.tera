@@ -1,0 +1,8 @@
+{% include "incl/header" %}
+
+{{job.id}}
+{{job.company}}
+{{job.title}}
+
+{% include "incl/footer" %}
+

@@ -79,10 +79,30 @@ fn add_post(input: Form<JobInput<'_>>) -> Template {
     )
 }
 
+#[get("/job/<uid>")]
+fn show_job(uid: usize) -> Template {
+    let jobs = load().unwrap();
+    match jobs.iter().find(|job| job.id == uid) {
+        Some(job) => Template::render(
+            "job",
+            context! {
+                title: &job.title,
+                job: job,
+            },
+        ),
+        None => Template::render(
+            "no_such_job",
+            context! {
+                title: "No such job",
+            },
+        ),
+    }
+}
+
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-        .mount("/", routes![index, add_get, add_post])
+        .mount("/", routes![index, add_get, add_post, show_job])
         .attach(Template::fairing())
 }
 

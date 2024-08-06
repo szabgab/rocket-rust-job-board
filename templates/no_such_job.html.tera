@@ -1,0 +1,6 @@
+{% include "incl/header" %}
+
+No such job
+
+{% include "incl/footer" %}
+
