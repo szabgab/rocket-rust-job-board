@@ -40,10 +40,16 @@ impl Job {
 
 #[get("/")]
 fn index() -> Template {
+    let jobs: Vec<Job> = match load() {
+        Ok(jobs) => jobs,
+        Err(_) => vec![],
+    };
+
     Template::render(
         "index",
         context! {
-            name: "Rocket with Tera"
+            name: "Rocket with Tera",
+            jobs: jobs
         },
     )
 }
@@ -88,6 +94,28 @@ fn get_db() -> PathBuf {
     fs::create_dir_all(&path).unwrap();
 
     path
+}
+
+fn load() -> Result<Vec<Job>, Box<dyn Error>> {
+    let db = get_db();
+    let filename = db.join("my.db");
+
+    let mut fh = fs::File::options().read(true).open(filename)?;
+    fh.lock(FileLockMode::Exclusive)?;
+
+    let mut buffer = [0; 1000000];
+
+    let res = fh.read(&mut buffer)?;
+
+    let content = String::from_utf8(buffer[0..res].to_vec())?;
+
+    let jobs: Vec<Job> = if content.is_empty() {
+        vec![]
+    } else {
+        serde_json::from_str(&content).unwrap()
+    };
+
+    Ok(jobs)
 }
 
 fn save(input: &JobInput) -> Result<(), Box<dyn Error>> {

@@ -4,4 +4,9 @@
 
 Hello <b>{{ name }}!</b>
 
+
+{% for job in jobs %}
+    <li><a href="/job/{{job.id}}">{{job.title}}</a></li>
+{% endfor %}
+
 {% include "incl/footer" %}
