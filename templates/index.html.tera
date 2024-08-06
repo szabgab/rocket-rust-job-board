@@ -1,1 +1,7 @@
+{% set title = "Rust Job board using Rocket" %}
+{% include "incl/header" %}
+
+
 Hello <b>{{ name }}!</b>
+
+{% include "incl/footer" %}

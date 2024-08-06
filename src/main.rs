@@ -10,10 +10,18 @@ fn index() -> Template {
     })
 }
 
+#[get("/add")]
+fn add() -> Template {
+    Template::render("add", context! {
+        title: "Add a Rust job"
+    })
+}
+
+
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-        .mount("/", routes![index])
+        .mount("/", routes![index, add])
         .attach(Template::fairing())
 }
 

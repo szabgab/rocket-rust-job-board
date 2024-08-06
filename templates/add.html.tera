@@ -1,0 +1,12 @@
+{% include "incl/header" %}
+
+<div>
+    <form action="/add" method="POST">
+        Job Title: <input name="title"><br>
+        Company name: <input name="company"><br>
+        <input type="submit" value="Send">
+    </form>
+</div>
+
+{% include "incl/footer" %}
+
